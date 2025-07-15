@@ -1,0 +1,14 @@
+﻿<Window x:Class="CMS.Menu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CMS"
+        mc:Ignorable="d"
+        Title="Menu" WindowState="Maximized"
+        ResizeMode="CanResize" WindowStyle="ToolWindow"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Button Name="ButtonLogout" Width="50" Height="50" Content="LogOut" Click="ButtonLogout_Click"/>
+    </Grid>
+</Window>
