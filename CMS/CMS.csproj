@@ -9,9 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Users.xml" />
     <None Remove="Resources\background.png" />
     <None Remove="Resources\otvoreno_oko.png" />
     <None Remove="Resources\zatvoreno_oko.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\Users.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Notification.Wpf" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ArrayOfUser>
+	<User>
+		<Name>Katarina</Name>
+		<Surname>Veljkovic</Surname>
+		<Username>Admin123</Username>
+		<Password>admin123</Password>
+		<Role>Admin</Role>
+	</User>
+	<User>
+		<Name>Mateja</Name>
+		<Surname>Vasic</Surname>
+		<Username>Visitor1</Username>
+		<Password>visitor1</Password>
+		<Role>Visitor</Role>
+	</User>
+	<User>
+		<Name>Milena</Name>
+		<Surname>Milic</Surname>
+		<Username>Visitor2</Username>
+		<Password>visitor2</Password>
+		<Role>Visitor</Role>
+	</User>
+</ArrayOfUser>

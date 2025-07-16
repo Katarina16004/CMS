@@ -9,6 +9,7 @@
         <ImageBrush ImageSource="Resources/background.png" Stretch="UniformToFill"/>
     </Window.Background>
     <Grid>
+
         <Border Width="400" Height="520"
                 Background="#BBFFFFFF"
                 CornerRadius="20"
@@ -30,36 +31,39 @@
             <TextBlock Text="Username:" FontSize="16" HorizontalAlignment="Center" />
             <TextBox x:Name="UsernameTextBox" 
                          Style="{StaticResource ModernTextBox}"/>
-            
+            <Label Name="UsernameNote" Visibility="Visible" Margin="0,0,0,10" Foreground="Red" HorizontalAlignment="Center"/>
+
             <TextBlock Text="Password:" FontSize="16" HorizontalAlignment="Center" />
             <Grid Margin="40,0,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="40" />
-                </Grid.ColumnDefinitions>
-                <PasswordBox x:Name="PasswordBox"
-                             Style="{StaticResource ModernPasswordBox}" 
-                             HorizontalAlignment="Center" 
-                             Visibility="Visible" PasswordChanged="PasswordBox_PasswordChanged" />
-                <TextBox Name="PasswordTextBox" 
-                            Visibility="Hidden" 
-                            Style="{StaticResource ModernTextBox}"/>
-                    <Image x:Name="EyeIcon" Source="Resources/otvoreno_oko.png" 
-                        Width="40" Height="40" 
-                        Grid.Column="1" MouseDown="EyeIcon_MouseDown"/>
-                </Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
+            <PasswordBox x:Name="PasswordBox"
+                            Style="{StaticResource ModernPasswordBox}" 
+                            HorizontalAlignment="Center" 
+                            Visibility="Visible" PasswordChanged="PasswordBox_PasswordChanged" />
+            <TextBox Name="PasswordTextBox" 
+                        Visibility="Hidden" 
+                        Style="{StaticResource ModernTextBox}"/>
+                <Image x:Name="EyeIcon" Source="Resources/zatvoreno_oko.png" 
+                    Width="40" Height="40" 
+                    Grid.Column="1" MouseDown="EyeIcon_MouseDown"/>
+            </Grid>
+            <Label Name="PasswordNote" Visibility="Visible" Foreground="Red" HorizontalAlignment="Center"/>
+            
             <Grid Margin="0,20,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button Name="LoginButton" Content="Login" 
-                        Style="{StaticResource ModernButton}" 
-                        Width="120" Click="LoginButton_Click"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="LoginButton" Content="Login" 
+                    Style="{StaticResource ModernButton}" 
+                    Width="120" Click="LoginButton_Click"/>
 
-                <Button Name="ExitButton" Content="Exit" Grid.Column="1"
-                        Style="{StaticResource ModernButton}" 
-                        Width="120" Click="ExitButton_Click" />
+            <Button Name="ExitButton" Content="Exit" Grid.Column="1"
+                    Style="{StaticResource ModernButton}" 
+                    Width="120" Click="ExitButton_Click" />
             </Grid>
             
         </StackPanel>
