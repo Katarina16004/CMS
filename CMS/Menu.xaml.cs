@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CMS.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,16 @@ namespace CMS
     /// </summary>
     public partial class Menu : Window
     {
-        public Menu()
+        User currentUser;
+        public Menu(User currentUser)
         {
             InitializeComponent();
+            this.currentUser = currentUser;
+            NameSurnameCurrentUser.Content = currentUser.Name + " " + currentUser.Surname;
+            if (currentUser.Role == Enums.UserRole.Admin)
+                MainContent.Content = new AdminUserControl();
+            else
+                MainContent.Content = new VisitorUserControl();
         }
 
         private void ButtonLogout_Click(object sender, RoutedEventArgs e)

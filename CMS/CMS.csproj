@@ -10,8 +10,13 @@
 
   <ItemGroup>
     <None Remove="Data\Users.xml" />
+    <None Remove="Resources\affinity.png" />
     <None Remove="Resources\background.png" />
+    <None Remove="Resources\corelDraw.png" />
+    <None Remove="Resources\gimp.png" />
     <None Remove="Resources\otvoreno_oko.png" />
+    <None Remove="Resources\paintnet.png" />
+    <None Remove="Resources\photoshop.png" />
     <None Remove="Resources\zatvoreno_oko.png" />
   </ItemGroup>
 
@@ -26,8 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\affinity.png" />
     <Resource Include="Resources\background.png" />
+    <Resource Include="Resources\corelDraw.png" />
+    <Resource Include="Resources\gimp.png" />
     <Resource Include="Resources\otvoreno_oko.png" />
+    <Resource Include="Resources\paintnet.png" />
+    <Resource Include="Resources\photoshop.png" />
     <Resource Include="Resources\zatvoreno_oko.png" />
   </ItemGroup>
 

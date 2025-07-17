@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ArrayOfContentItem>
+	<ContentItem>
+		<NumericValue>1</NumericValue>
+		<Text>Adobe Photoshop</Text>
+		<ImagePath>Resources/photoshop.png</ImagePath>
+		<RtfFilePath>Data/photoshop.rtf</RtfFilePath>
+		<DateAdded>2025-07-01T12:00:00</DateAdded>
+	</ContentItem>
+	<ContentItem>
+		<NumericValue>2</NumericValue>
+		<Text>GIMP</Text>
+		<ImagePath>Resources/gimp.png</ImagePath>
+		<RtfFilePath>Data/gimp.rtf</RtfFilePath>
+		<DateAdded>2025-07-05T14:30:00</DateAdded>
+	</ContentItem>
+	<ContentItem>
+		<NumericValue>3</NumericValue>
+		<Text>CorelDRAW</Text>
+		<ImagePath>Resources/corelDraw.png</ImagePath>
+		<RtfFilePath>Data/coreldraw.rtf</RtfFilePath>
+		<DateAdded>2025-07-08T09:15:00</DateAdded>
+	</ContentItem>
+	<ContentItem>
+		<NumericValue>4</NumericValue>
+		<Text>Affinity Photo</Text>
+		<ImagePath>Resources/affinity.png</ImagePath>
+		<RtfFilePath>Data/affinityphoto.rtf</RtfFilePath>
+		<DateAdded>2025-07-10T16:45:00</DateAdded>
+	</ContentItem>
+	<ContentItem>
+		<NumericValue>5</NumericValue>
+		<Text>Paint.NET</Text>
+		<ImagePath>Resources/paintnet.png</ImagePath>
+		<RtfFilePath>Data/paintnet.rtf</RtfFilePath>
+		<DateAdded>2025-07-12T11:20:00</DateAdded>
+	</ContentItem>
+</ArrayOfContentItem>

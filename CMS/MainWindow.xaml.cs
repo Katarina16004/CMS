@@ -43,6 +43,7 @@ namespace CMS
                 Type = type // Success, Error, Information, Warning
             },
             expirationTime: TimeSpan.FromSeconds(3));
+            
         }
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -113,7 +114,7 @@ namespace CMS
             currentUser = result.AuthenticatedUser;
             ShowToast("Login successful",$"Welcome, {currentUser.Name} ", NotificationType.Success);
 
-            Menu menuWindow = new Menu();
+            Menu menuWindow = new Menu(currentUser);
             menuWindow.Show();
             this.Close();
         }
@@ -156,6 +157,5 @@ namespace CMS
             else
                 EyeIcon.Visibility = Visibility.Visible;
         }
-        
     }
 }
