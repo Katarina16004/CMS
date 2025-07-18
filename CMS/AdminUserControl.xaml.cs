@@ -140,5 +140,21 @@ namespace CMS
         {
         }
 
+        private void SelectAllCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox selectAllCheckBox)
+            {
+                bool isChecked = selectAllCheckBox.IsChecked == true;
+
+                foreach (var item in ContentDataGrid.Items)
+                {
+                    if (item is ContentItem contentItem)
+                    {
+                        contentItem.IsSelected = isChecked;
+                    }
+                }
+                ContentDataGrid.Items.Refresh();
+            }
+        }
     }
 }

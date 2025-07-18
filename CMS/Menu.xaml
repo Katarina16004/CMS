@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Menu" WindowState="Maximized"
         WindowStyle="None"
-        ResizeMode="CanResize" WindowStyle="ToolWindow"
+        ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen">
 
     <Grid>

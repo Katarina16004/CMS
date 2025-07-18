@@ -14,19 +14,24 @@
                 <Button Name="DeleteButton" Content="Delete" Width="120" Margin="5" Click="DeleteButton_Click" Style="{StaticResource ModernButton}" IsEnabled="False"/>
             </StackPanel>
 
-            <DataGrid x:Name="ContentDataGrid" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto" >
+            <DataGrid x:Name="ContentDataGrid" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Select" Width="Auto">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <CheckBox Name="SelectAllCheckBox" Click="SelectAllCheckBox_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Text" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock>
+                                <TextBlock VerticalAlignment="Center" Margin="10">
                                 <Hyperlink Click="Hyperlink_Click">
                                     <Run Text="{Binding Text}" />
                                 </Hyperlink>
