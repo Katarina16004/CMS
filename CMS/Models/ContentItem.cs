@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace CMS.Models
 {
-    public class ContentItem
+    public class ContentItem: INotifyPropertyChanged
     {
-        public bool IsSelected { get; set; }
+        private bool isSelected;
         public int NumericValue { get; set; }
         public string Text { get; set; } = string.Empty;
 
@@ -13,7 +15,18 @@ namespace CMS.Models
         public string RtfFilePath { get; set; }=string.Empty;
 
         public DateTime DateAdded { get; set; }
-
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                if (isSelected != value)
+                {
+                    isSelected = value;
+                    OnPropertyChanged(nameof(IsSelected));
+                }
+            }
+        }
         public ContentItem()
         {
             DateAdded = DateTime.Now;
@@ -26,5 +39,8 @@ namespace CMS.Models
             RtfFilePath= rtfFilePath;
             DateAdded = DateTime.Now; 
         }
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

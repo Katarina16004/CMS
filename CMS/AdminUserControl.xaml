@@ -10,13 +10,19 @@
         <DockPanel Margin="10">
 
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10" >
-                <Button Content="Add" Width="80" Margin="5" Click="Add_Click" Style="{StaticResource ModernButton}"/>
-                <Button Content="Delete" Width="120" Margin="5" Click="Delete_Click" Style="{StaticResource ModernButton}"/>
+                <Button Name="AddButton" Content="Add" Width="80" Margin="5" Click="AddButton_Click" Style="{StaticResource ModernButton}"/>
+                <Button Name="DeleteButton" Content="Delete" Width="120" Margin="5" Click="DeleteButton_Click" Style="{StaticResource ModernButton}" IsEnabled="False"/>
             </StackPanel>
 
             <DataGrid x:Name="ContentDataGrid" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto" >
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Binding="{Binding IsSelected}" Width="40"/>
+                    <DataGridTemplateColumn Header="Select" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Text" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

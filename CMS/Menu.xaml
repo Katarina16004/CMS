@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CMS"
         mc:Ignorable="d"
         Title="Menu" WindowState="Maximized"
+        WindowStyle="None"
         ResizeMode="CanResize" WindowStyle="ToolWindow"
         WindowStartupLocation="CenterScreen">
 

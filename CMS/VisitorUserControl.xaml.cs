@@ -1,4 +1,5 @@
 ﻿using CMS.Models;
+using CMS.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,23 @@ namespace CMS
     /// </summary>
     public partial class VisitorUserControl : UserControl
     {
+        private XmlDataService<ContentItem> contentService;
+        private List<ContentItem> contentItems;
         public VisitorUserControl()
         {
             InitializeComponent();
+            contentService = new XmlDataService<ContentItem>("Data/Content.xml");
+            LoadContent();
+        }
+        private void LoadContent()
+        {
+            contentItems = contentService.LoadAll();
+            ContentDataGrid.ItemsSource = contentItems;
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
