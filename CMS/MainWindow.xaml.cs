@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Notification.Wpf;
+using System.Windows.Threading;
 
 namespace CMS
 {
@@ -18,6 +19,7 @@ namespace CMS
     /// </summary>
     public partial class MainWindow : Window
     {
+        private DispatcherTimer notificationTimer;
         private bool passwordVisibility;
         private readonly IAuthenticationService authenticationService;
         private readonly NotificationManager notificationManager = new NotificationManager();
@@ -31,38 +33,31 @@ namespace CMS
             EyeIcon.Visibility = Visibility.Collapsed;
             UsernameTextBox.Focus();
 
+            #region notificationSetup
+            notificationTimer = new DispatcherTimer();
+            notificationTimer.Interval = TimeSpan.FromSeconds(3);
+            notificationTimer.Tick += (s, e) =>
+            {
+                NotificationPanel.Visibility = Visibility.Collapsed;
+                notificationTimer.Stop();
+            };
+            #endregion
+
             authenticationService = new AuthenticationService();
 
         }
-        private void ShowToast(string title,string message, NotificationType type = NotificationType.Error)
+        private void ShowToast(string title,string message)
         {
-            notificationManager.Show(new NotificationContent
-            {
-                Title = title,
-                Message = message,
-                Type = type // Success, Error, Information, Warning
-            },
-            expirationTime: TimeSpan.FromSeconds(3));
-            
+            NotificationTitle.Text = title;
+            NotificationMessage.Text = message;
+            NotificationPanel.Visibility = Visibility.Visible;
+
+            notificationTimer.Stop();
+            notificationTimer.Start();
+
         }
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            /*List<User> users = xmlDataService.LoadAll();
-
-            if (users.Count == 0)
-            {
-                UsernameTextBox.Text = "Nema korisnika.";
-                return;
-            }
-
-            StringBuilder sb = new StringBuilder();
-            foreach (var user in users)
-            {
-                sb.AppendLine($"{user.Name} {user.Surname} ({user.Username}) - {user.Role}");
-            }
-
-            UsernameTextBox.Text = sb.ToString();*/
-
             string? username = UsernameTextBox.Text.Trim();
             string? password;
             if (PasswordBox.Visibility == Visibility.Visible)
@@ -101,7 +96,7 @@ namespace CMS
 
             if (!result.Success)
             {
-                ShowToast("Error","Invalid username or password", NotificationType.Error);
+                ShowToast("Error","Invalid username or password");
                 PasswordNote.Content = "";
                 PasswordBox.ClearValue(Border.BorderBrushProperty);
                 PasswordTextBox.ClearValue(Border.BorderBrushProperty);
@@ -112,7 +107,6 @@ namespace CMS
                 return;
             }
             currentUser = result.AuthenticatedUser;
-            ShowToast("Login successful",$"Welcome, {currentUser.Name} ", NotificationType.Success);
 
             Menu menuWindow = new Menu(currentUser);
             menuWindow.Show();
