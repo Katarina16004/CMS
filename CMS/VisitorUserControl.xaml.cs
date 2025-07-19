@@ -38,7 +38,9 @@ namespace CMS
             if (ContentDataGrid.SelectedItem is ContentItem selectedItem)
             {
                 VisitorContentDetails detailsWindow = new VisitorContentDetails(selectedItem);
-                detailsWindow.ShowDialog();
+                Window menuWindow = Window.GetWindow(this);
+                detailsWindow.Show();
+                //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
             }
         }
 

@@ -31,12 +31,14 @@ namespace CMS
     {
         private XmlDataService<ContentItem> contentService;
         private ObservableCollection<ContentItem> items;
+        private  DeleteContentService _deletionService;
         private readonly NotificationManager _notificationManager = new NotificationManager();
 
         public AdminUserControl()
         {
             InitializeComponent();
             contentService = new XmlDataService<ContentItem>("Data/Content.xml");
+            _deletionService = new DeleteContentService(contentService);
             LoadContent();
         }
         public void ShowNotification(string title,string message, NotificationType type= NotificationType.Error)
@@ -106,30 +108,13 @@ namespace CMS
 
             if (result != MessageBoxResult.Yes)
                 return;
-            foreach (var item in selectedItems)
-            {
-                if (!string.IsNullOrEmpty(item.RtfFilePath))
-                {
-                    if (File.Exists(item.RtfFilePath))
-                    {
-                        try
-                        {
-                            File.Delete(item.RtfFilePath);
-                        }
-                        catch (Exception ex)
-                        {
-                            ShowNotification("Error", $"Couldn't delete RTF file: {item.RtfFilePath}\n{ex.Message}",NotificationType.Error);
-                        }
-                    }
-                    /*else
-                    {
-                        ShowNotification("Warning", $"RTF file doesn't exist: {item.RtfFilePath}", NotificationType.Warning);
-                    }*/
-                }
-                items.Remove(item);
-                
-            }
-            ShowNotification("Success", $"{selectedItems.Count} selected item{(selectedItems.Count > 1 ? "s have" : " has")} been successfully deleted", NotificationType.Success);
+            
+            int deleted = _deletionService.DeleteContent(items, selectedItems);
+
+            if(deleted < 1)
+                ShowNotification("Error", $"Problem deleting a RTF file", NotificationType.Error);
+            else
+                ShowNotification("Success", $"{deleted} selected item{(deleted > 1 ? "s have" : " has")} been successfully deleted", NotificationType.Success);
 
             contentService.SaveAll(items.ToList());
             UpdateDeleteButtonState();

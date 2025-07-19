@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="VisitorContentDetails" 
         WindowState="Maximized"
-        ResizeMode="CanResize"
+        ResizeMode="CanResize" Background="Beige"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Label>Prikazzz</Label>
+    <Grid Margin="10">
+        <TextBox Background="Transparent" BorderThickness="0">Pise nesto</TextBox>
     </Grid> 
 </Window>

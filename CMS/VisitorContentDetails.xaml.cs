@@ -20,8 +20,10 @@ namespace CMS
     /// </summary>
     public partial class VisitorContentDetails : Window
     {
+        ContentItem selectedItem;
         public VisitorContentDetails(ContentItem selectedItem)
         {
+            this.selectedItem = selectedItem;
             InitializeComponent();
         }
     }
