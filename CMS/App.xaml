@@ -77,7 +77,6 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="#3A3A3A"/>
             <Setter Property="RowBackground" Value="White"/>
-            <Setter Property="AlternatingRowBackground" Value="#F7F9FC"/>
             <Setter Property="HorizontalGridLinesBrush" Value="#D6B3FF"/>
             <Setter Property="VerticalGridLinesBrush" Value="#D6B3FF"/>
             <Setter Property="CellStyle">

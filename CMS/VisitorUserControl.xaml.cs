@@ -11,9 +11,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CMS
 {
@@ -38,7 +35,33 @@ namespace CMS
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
+            if (ContentDataGrid.SelectedItem is ContentItem selectedItem)
+            {
+                VisitorContentDetails detailsWindow = new VisitorContentDetails(selectedItem);
+                detailsWindow.ShowDialog();
+            }
+        }
 
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Image image)
+            {
+                Window imageWindow = new Window
+                {
+                    Title = "Image preview",
+                    Width = 500,
+                    Height = 400,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                    Content = new Image
+                    {
+                        Source = image.Source,
+                        Stretch = Stretch.Uniform,
+                        Margin = new Thickness(10)
+                    }
+                };
+
+                imageWindow.ShowDialog();
+            }
         }
     }
 }

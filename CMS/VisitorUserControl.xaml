@@ -9,15 +9,15 @@
     <Grid>
         <DockPanel Margin="10">
 
-            <DataGrid x:Name="ContentDataGrid" Style="{StaticResource ModernDataGrid}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto" >
+            <DataGrid x:Name="ContentDataGrid" Style="{StaticResource ModernDataGrid}" Margin="30" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Text" Width="*">
+                    <DataGridTemplateColumn Header="Title" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock>
-                        <Hyperlink Click="Hyperlink_Click">
-                            <Run Text="{Binding Text}" />
-                        </Hyperlink>
+                                <TextBlock VerticalAlignment="Center" Margin="10">
+                                <Hyperlink Click="Hyperlink_Click">
+                                    <Run Text="{Binding Text}" />
+                                </Hyperlink>
                                 </TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -25,11 +25,19 @@
                     <DataGridTemplateColumn Header="Image" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImagePath}" Width="100" Height="70" Stretch="Uniform"/>
+                                <Image Source="{Binding ImagePath}" Width="100" Height="70" Stretch="Uniform" Cursor="Hand" MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Date Added" Binding="{Binding DateAdded, StringFormat=d}" Width="120"/>
+                    <DataGridTextColumn Header="Date Added" Binding="{Binding DateAdded, StringFormat='{}{0:dd.MM.yyyy}'}" Width="120">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="TextAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
