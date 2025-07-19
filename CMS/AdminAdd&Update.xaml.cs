@@ -16,15 +16,17 @@ using System.Windows.Shapes;
 namespace CMS
 {
     /// <summary>
-    /// Interaction logic for VisitorContentDetails.xaml
+    /// Interaction logic for AdminAdd_Update.xaml
     /// </summary>
-    public partial class VisitorContentDetails : Window
+    public partial class AdminAdd_Update : Window
     {
         ContentItem selectedItem;
-        public VisitorContentDetails(ContentItem selectedItem)
+        public AdminAdd_Update(ContentItem selectedItem=null)
         {
             InitializeComponent();
             this.selectedItem = selectedItem;
+            //ako je selected item null znamo da smo pozvali dodavanje, prazna polja
+            //ako nije null, radimo izmenu, popunjena polja
         }
     }
 }

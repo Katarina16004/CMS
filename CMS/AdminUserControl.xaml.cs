@@ -64,6 +64,10 @@ namespace CMS
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            AdminAdd_Update detailsWindow = new AdminAdd_Update();
+            Window menuWindow = Window.GetWindow(this);
+            detailsWindow.Show();
+            //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
         }
         private void Item_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -123,6 +127,13 @@ namespace CMS
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
+            if (ContentDataGrid.SelectedItem is ContentItem selectedItem)
+            {
+                AdminAdd_Update detailsWindow = new AdminAdd_Update(selectedItem);
+                Window menuWindow = Window.GetWindow(this);
+                detailsWindow.Show();
+                //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
+            }
         }
 
         private void SelectAllCheckBox_Click(object sender, RoutedEventArgs e)
