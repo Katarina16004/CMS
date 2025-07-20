@@ -8,19 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Notification.Wpf;
-using Notification.Wpf.Controls;
-using System;
 
 namespace CMS
 {
@@ -66,7 +58,7 @@ namespace CMS
         {
             AdminAdd_Update detailsWindow = new AdminAdd_Update();
             Window menuWindow = Window.GetWindow(this);
-            detailsWindow.Show();
+            detailsWindow.ShowDialog();
             //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
         }
         private void Item_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -131,7 +123,7 @@ namespace CMS
             {
                 AdminAdd_Update detailsWindow = new AdminAdd_Update(selectedItem);
                 Window menuWindow = Window.GetWindow(this);
-                detailsWindow.Show();
+                detailsWindow.ShowDialog();
                 //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
             }
         }

@@ -24,9 +24,15 @@ namespace CMS
         public AdminAdd_Update(ContentItem selectedItem=null)
         {
             InitializeComponent();
+
             this.selectedItem = selectedItem;
             //ako je selected item null znamo da smo pozvali dodavanje, prazna polja
             //ako nije null, radimo izmenu, popunjena polja
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

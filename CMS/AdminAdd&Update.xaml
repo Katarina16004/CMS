@@ -3,10 +3,136 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:local="clr-namespace:CMS"
         mc:Ignorable="d"
-        Title="AdminContentDetails" Height="450" Width="800">
+        Background="Transparent"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Title="AdminContentDetails">
     <Grid>
-        
+        <Viewbox Stretch="Fill">
+            <Canvas Width="1000" Height="700">
+                <Path Fill="#D6B3FF">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure StartPoint="20,0" IsClosed="True">
+                                <LineSegment Point="980,0"/>
+                                <QuadraticBezierSegment Point1="1000,0" Point2="1000,20"/>
+                                <LineSegment Point="1000,680"/>
+                                <QuadraticBezierSegment Point1="1000,700" Point2="980,700"/>
+                                <LineSegment Point="20,700"/>
+                                <QuadraticBezierSegment Point1="0,700" Point2="0,680"/>
+                                <LineSegment Point="0,20"/>
+                                <QuadraticBezierSegment Point1="0,0" Point2="20,0"/>
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+        </Viewbox>
+
+        <Border
+            Background="#BBFFFFFF"
+            CornerRadius="20"
+            Margin="35" 
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label VerticalAlignment="Center">Title:</Label>
+                        <TextBox Grid.Column="1" Style="{StaticResource ModernTextBox}"
+                    x:Name="TitleTextBox"/>
+                    </StackPanel>
+
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Photo:</TextBlock>
+                        <Button Content="Select image" Style="{StaticResource ModernButton}" Width="130"/>
+                        <Image x:Name="ImagePreview" Height="100" Width="100" Margin="20,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+
+                <ToolBar Grid.Row="1" Height="35">
+
+                    <ToolBar.Background>
+                        <ImageBrush ImageSource="Resources/background.png" Stretch="UniformToFill"/>
+                    </ToolBar.Background>
+                    <ToggleButton x:Name="BoldButton" ToolTip="Bold" Style="{StaticResource ModernToggleButton}">
+                        <fa5:SvgAwesome
+                        Height="15" Width="15"
+                        Icon="Solid_Bold"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center" />
+                    </ToggleButton>
+                    <ToggleButton x:Name="ItalicButton" ToolTip="Italic" Style="{StaticResource ModernToggleButton}">
+                        <fa5:SvgAwesome
+                        Height="15" Width="15"
+                        Icon="Solid_Italic"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center" />
+                    </ToggleButton>
+                    <ToggleButton x:Name="UnderlineButton" ToolTip="Underline" Style="{StaticResource ModernToggleButton}" >
+                        <fa5:SvgAwesome
+                        Height="15" Width="15"
+                        Icon="Solid_Underline"
+                        Foreground="Black"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center" />
+                    </ToggleButton>
+
+                    <Separator Width="0.5" Background="White" Margin="0,0,10,0"/>
+
+                    <ComboBox x:Name="FontFamilyComboBox" Width="150"/>
+                    <ComboBox x:Name="FontSizeComboBox" Width="60" Margin="10,0">
+                        <ComboBoxItem Content="10"/>
+                        <ComboBoxItem Content="12"/>
+                        <ComboBoxItem Content="14"/>
+                        <ComboBoxItem Content="16"/>
+                        <ComboBoxItem Content="18"/>
+                        <ComboBoxItem Content="20"/>
+                    </ComboBox>
+
+                    <ComboBox x:Name="ColorComboBox" Width="150">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Width="16" Height="16" Fill="{Binding}" Stroke="Black" StrokeThickness="0.5" Margin="2"/>
+                                    <TextBlock Text="{Binding}" Margin="5,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </ToolBar>
+
+                <RichTextBox Grid.Row="2" x:Name="EditorRichTextBox" BorderThickness="2" BorderBrush="#D6B3FF" Margin="10,10" VerticalScrollBarVisibility="Auto" />
+
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="WordCountText" Text="Words: 0" Margin="15"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" Margin="10,0">
+                        <Button Name="SaveButton" Content="Save" Style="{StaticResource ModernButton}" Width="150" Margin="20,0"/>
+                        <Button Name="CloseButton" Content="Close" Style="{StaticResource ModernButton}" Width="150" Click="CloseButton_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
