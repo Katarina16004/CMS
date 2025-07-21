@@ -30,15 +30,21 @@ namespace CMS
             //ako nije null, radimo izmenu, popunjena polja
 
             TitleTextBox.Focus();
+
             FontFamilyComboBox.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source); //sortira po imenu
-
-            //za dodavanje
-            if(selectedItem == null )
+            FontFamily defaultFont = new FontFamily("Segoe UI");
+            FontFamilyComboBox.SelectedItem = defaultFont;
+            FontSizeComboBox.Text = "12";
+            var colors = typeof(Colors).GetProperties()
+            .Select(p => new
             {
-                FontFamily defaultFont = new FontFamily("Segoe UI");
-                FontFamilyComboBox.SelectedItem = defaultFont;
+                Name = p.Name,
+                Brush = new SolidColorBrush((Color)p.GetValue(null))
+            }).OrderBy(c => c.Name).ToList();
 
-            }
+            FontColorComboBox.ItemsSource = colors;
+            FontColorComboBox.SelectedItem= colors.FirstOrDefault(c => c.Name == "Black");
+
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -49,7 +55,7 @@ namespace CMS
         private void EditorRichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextRange text = new TextRange(EditorRichTextBox.Document.ContentStart, EditorRichTextBox.Document.ContentEnd);
-            int wordCount = text.Text.Split(new char[] { ' ', '\r', '\n', '.', ',', ';', ':', '\t', '!', '?', '-', '(', ')', '"' }, StringSplitOptions.RemoveEmptyEntries).Length;
+            int wordCount = text.Text.Split(new char[] { ' ', '\r', '\n', '.', ',', ';', ':', '\t', '!', '?', '(', ')', '"' }, StringSplitOptions.RemoveEmptyEntries).Length;
             WordCountTextBlock.Text = $"Words: {wordCount}";
         }
 
@@ -65,8 +71,31 @@ namespace CMS
         {
             object fontWeight = EditorRichTextBox.Selection.GetPropertyValue(Inline.FontWeightProperty);
             BoldButton.IsChecked = (fontWeight != DependencyProperty.UnsetValue) && (fontWeight.Equals(FontWeights.Bold)); //da li vrednost nije null
+            object fontStyle = EditorRichTextBox.Selection.GetPropertyValue(Inline.FontStyleProperty);
+            ItalicButton.IsChecked = (fontStyle != DependencyProperty.UnsetValue) && fontStyle.Equals(FontStyles.Italic);
+            object textDecoration = EditorRichTextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
+            UnderlineButton.IsChecked = (fontStyle != DependencyProperty.UnsetValue) && textDecoration.Equals(TextDecorations.Underline);
+
             object fontFamily = EditorRichTextBox.Selection.GetPropertyValue(Inline.FontFamilyProperty);
             FontFamilyComboBox.SelectedItem = fontFamily;
+
+            object fontSize = EditorRichTextBox.Selection.GetPropertyValue(Inline.FontSizeProperty);
+            FontSizeComboBox.SelectedItem = fontSize;
+        }
+
+        private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FontSizeComboBox.SelectedItem!=null && !EditorRichTextBox.Selection.IsEmpty)
+                EditorRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, FontSizeComboBox.SelectedItem);
+        }
+
+        private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FontColorComboBox.SelectedItem != null && !EditorRichTextBox.Selection.IsEmpty)
+            {
+                dynamic colorItem = FontColorComboBox.SelectedItem;
+                EditorRichTextBox.Selection.ApplyPropertyValue(Inline.ForegroundProperty, colorItem.Brush);
+            }
         }
     }
 }
