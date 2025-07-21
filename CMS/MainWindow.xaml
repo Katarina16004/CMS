@@ -85,12 +85,10 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Button Name="LoginButton" Content="Login" 
-                    Style="{StaticResource ModernButton}" 
-                    Width="120" Click="LoginButton_Click"/>
+                    Style="{StaticResource ModernButton}"  Click="LoginButton_Click"/>
 
                         <Button Name="ExitButton" Content="Exit" Grid.Column="1"
-                    Style="{StaticResource ModernButton}" 
-                    Width="120" Click="ExitButton_Click" />
+                    Style="{StaticResource ModernButton}" Click="ExitButton_Click" />
                     </Grid>
 
                 </StackPanel>

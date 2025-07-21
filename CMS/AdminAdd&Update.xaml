@@ -60,7 +60,7 @@
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Photo:</TextBlock>
-                        <Button Content="Select image" Style="{StaticResource ModernButton}" Width="130"/>
+                        <Button Content="Select image" Style="{StaticResource ModernButton}" />
                         <Image x:Name="ImagePreview" Height="100" Width="100" Margin="20,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
@@ -96,7 +96,15 @@
 
                     <Separator Width="0.5" Background="White" Margin="0,0,10,0"/>
 
-                    <ComboBox x:Name="FontFamilyComboBox" Width="150"/>
+                    <ComboBox SelectionChanged="FontFamilyComboBox_SelectionChanged"
+                        Name="FontFamilyComboBox"
+                        Width="150" IsTextSearchCaseSensitive="False" IsTextSearchEnabled="True">   
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock MaxWidth="200" FontFamily="{Binding Source}" Text="{Binding Source}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <ComboBox x:Name="FontSizeComboBox" Width="60" Margin="10,0">
                         <ComboBoxItem Content="10"/>
                         <ComboBoxItem Content="12"/>
@@ -118,7 +126,7 @@
                     </ComboBox>
                 </ToolBar>
 
-                <RichTextBox Grid.Row="2" x:Name="EditorRichTextBox" BorderThickness="2" BorderBrush="#D6B3FF" Background="#fdf7ff" Margin="10,10,10,0" VerticalScrollBarVisibility="Auto" />
+                <RichTextBox Grid.Row="2" x:Name="EditorRichTextBox" BorderThickness="2" BorderBrush="#D6B3FF" Background="#fdf7ff" Margin="10,10,10,0" TextChanged="EditorRichTextBox_TextChanged" SelectionChanged="EditorRichTextBox_SelectionChanged" VerticalScrollBarVisibility="Auto" />
 
                 <StatusBar Grid.Row="3" Margin="10,0" Background="White" BorderThickness="2" BorderBrush="#D6B3FF">
                     <StatusBarItem>
@@ -126,8 +134,8 @@
                     </StatusBarItem>
                 </StatusBar>
                 <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" Margin="10,0">
-                    <Button Name="SaveButton" Content="Save" Style="{StaticResource ModernButton}" Width="150" Margin="20,0"/>
-                    <Button Name="CloseButton" Content="Close" Style="{StaticResource ModernButton}" Width="150" Click="CloseButton_Click"/>
+                    <Button Name="SaveButton" Content="Save" Style="{StaticResource ModernButton}" Margin="20,0"/>
+                    <Button Name="CloseButton" Content="Close" Style="{StaticResource ModernButton}" Click="CloseButton_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
