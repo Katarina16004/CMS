@@ -42,7 +42,7 @@
                     <DataGridTemplateColumn Header="Image" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImagePath}" Width="100" Height="70" Stretch="Uniform" Cursor="Hand" MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+                                <Image Source="{Binding ImagePath}" Width="100" Height="70" Stretch="Uniform" Cursor="Hand" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

@@ -1,6 +1,8 @@
 ﻿using CMS.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +22,9 @@ namespace CMS
     /// </summary>
     public partial class AdminAdd_Update : Window
     {
-        ContentItem selectedItem;
-        public AdminAdd_Update(ContentItem selectedItem=null)
+        private ContentItem selectedItem;
+        private string photo = "";
+        public AdminAdd_Update(ContentItem selectedItem = null)
         {
             InitializeComponent();
 
@@ -29,7 +32,8 @@ namespace CMS
             //ako je selected item null znamo da smo pozvali dodavanje, prazna polja
             //ako nije null, radimo izmenu, popunjena polja
 
-            TitleTextBox.Focus();
+            if (selectedItem == null)
+                TitleTextBox.Focus();
 
             FontFamilyComboBox.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source); //sortira po imenu
             FontFamily defaultFont = new FontFamily("Segoe UI");
@@ -95,6 +99,46 @@ namespace CMS
             {
                 dynamic colorItem = FontColorComboBox.SelectedItem;
                 EditorRichTextBox.Selection.ApplyPropertyValue(Inline.ForegroundProperty, colorItem.Brush);
+            }
+        }
+
+        private void SelectImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "PNG Images (*.png)|*.png";
+            openFileDialog.Title = "Select an image";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                photo = openFileDialog.FileName;
+                ImagePreview.Source = new BitmapImage(new Uri(photo));
+            }
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ImagePreview_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Image image)
+            {
+                Window imageWindow = new Window
+                {
+                    Title = "Image preview",
+                    Width = 500,
+                    Height = 400,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                    Content = new Image
+                    {
+                        Source = image.Source,
+                        Stretch = Stretch.Uniform,
+                        Margin = new Thickness(10)
+                    }
+                };
+
+                imageWindow.ShowDialog();
             }
         }
     }
