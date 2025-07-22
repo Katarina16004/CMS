@@ -22,7 +22,7 @@ namespace CMS
         private DispatcherTimer notificationTimer;
         private bool passwordVisibility;
         private readonly IAuthenticationService authenticationService;
-        private readonly NotificationManager notificationManager = new NotificationManager();
+        //private readonly NotificationManager notificationManager = new NotificationManager();
         private User? currentUser;
         public MainWindow()
         {

@@ -14,6 +14,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using Notification.Wpf;
+using CMS.Services;
+using System.Diagnostics.SymbolStore;
 
 namespace CMS
 {
@@ -22,12 +26,26 @@ namespace CMS
     /// </summary>
     public partial class AdminAdd_Update : Window
     {
+        private DispatcherTimer notificationTimer;
         private ContentItem selectedItem;
+        private List<ContentItem> items;
         private string photo = "";
-        public AdminAdd_Update(ContentItem selectedItem = null)
+        private ContentValidationService validationService;
+        public AdminAdd_Update(List<ContentItem> items, ContentItem selectedItem = null)
         {
             InitializeComponent();
+            validationService = new ContentValidationService();
+            #region notificationSetup
+            notificationTimer = new DispatcherTimer();
+            notificationTimer.Interval = TimeSpan.FromSeconds(3);
+            notificationTimer.Tick += (s, e) =>
+            {
+                NotificationPanel.Visibility = Visibility.Collapsed;
+                notificationTimer.Stop();
+            };
+            #endregion
 
+            this.items = items;
             this.selectedItem = selectedItem;
             //ako je selected item null znamo da smo pozvali dodavanje, prazna polja
             //ako nije null, radimo izmenu, popunjena polja
@@ -49,6 +67,27 @@ namespace CMS
             FontColorComboBox.ItemsSource = colors;
             FontColorComboBox.SelectedItem= colors.FirstOrDefault(c => c.Name == "Black");
 
+        }
+        private void ShowToast(string title, string message, bool success=false)
+        {
+            NotificationTitle.Text = title;
+            NotificationMessage.Text = message;
+            NotificationPanel.Visibility = Visibility.Visible;
+
+            if (success)
+            {
+                NotificationPanel.Background = new SolidColorBrush(Colors.LightGreen);
+                NotificationTitle.Foreground = new SolidColorBrush(Colors.DarkGreen);
+            }
+            else
+            {
+                NotificationPanel.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#DD4444"));
+                NotificationTitle.Foreground = Brushes.White;
+                NotificationMessage.Foreground = Brushes.White;
+            }
+
+            notificationTimer.Stop();
+            notificationTimer.Start();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -117,6 +156,57 @@ namespace CMS
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            TextRange textRange = new TextRange(EditorRichTextBox.Document.ContentStart, EditorRichTextBox.Document.ContentEnd);
+            string plainText = textRange.Text;
+            bool hasText = !string.IsNullOrWhiteSpace(plainText.Trim());
+
+            var result = validationService.ValidationSuccessful(items, TitleTextBox.Text, photo, hasText);
+            if(result.IsValidationError)
+            {
+                if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
+                {
+                    TitleNote.Content = "Fill in title field";
+                    TitleTextBox.BorderBrush = Brushes.Red;
+                }
+                else
+                {
+                    TitleNote.Content = "";
+                    TitleTextBox.ClearValue(Border.BorderBrushProperty);
+                }
+
+                if (string.IsNullOrWhiteSpace(photo))
+                {
+                    PhotoNote.Content = "Insert image";
+                }
+                else
+                {
+                    PhotoNote.Content = "";
+                }
+
+                if (hasText==false)
+                {
+                    RichTbNote.Content = "Write some text";
+                    EditorRichTextBox.BorderBrush= Brushes.Red;
+                }
+                else
+                {
+                    RichTbNote.Content = "";
+                    EditorRichTextBox.ClearValue(Border.BorderBrushProperty);
+                }
+                return;
+            }
+            if(!result.Success)
+            {
+                ShowToast("Error", "Title already exists");
+                return;
+            }
+
+            TitleNote.Content = "";
+            TitleTextBox.ClearValue(Border.BorderBrushProperty);
+            PhotoNote.Content = "";
+            RichTbNote.Content = "";
+            EditorRichTextBox.ClearValue(Border.BorderBrushProperty);
+            ShowToast("Success", "Successfuly saved",true);
 
         }
 

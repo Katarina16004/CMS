@@ -56,7 +56,7 @@ namespace CMS
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AdminAdd_Update detailsWindow = new AdminAdd_Update();
+            AdminAdd_Update detailsWindow = new AdminAdd_Update(items.ToList(),null);
             Window menuWindow = Window.GetWindow(this);
             detailsWindow.ShowDialog();
             //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
@@ -121,7 +121,7 @@ namespace CMS
         {
             if (ContentDataGrid.SelectedItem is ContentItem selectedItem)
             {
-                AdminAdd_Update detailsWindow = new AdminAdd_Update(selectedItem);
+                AdminAdd_Update detailsWindow = new AdminAdd_Update(items.ToList(), selectedItem);
                 Window menuWindow = Window.GetWindow(this);
                 detailsWindow.ShowDialog();
                 //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
