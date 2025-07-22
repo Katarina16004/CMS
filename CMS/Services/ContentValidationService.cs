@@ -10,7 +10,7 @@ namespace CMS.Services
 {
     public class ContentValidationService:IContentValidationService
     {
-        public ValidationResult ValidationSuccessful(List<ContentItem> items, string title, string? image, bool hasText)
+        public ValidationResult ValidationSuccessful(List<ContentItem> items, string title, string? image, bool hasText,ContentItem? currentItem = null)
         {
 
             if (string.IsNullOrWhiteSpace(title))
@@ -43,7 +43,8 @@ namespace CMS.Services
                 };
             }
 
-            bool titleExists = items.Any(c => string.Equals(c.Text, title, StringComparison.OrdinalIgnoreCase));
+            bool titleExists = items.Any(c =>!object.ReferenceEquals(c, currentItem) && string.Equals(c.Text, title, StringComparison.OrdinalIgnoreCase));
+
             if (titleExists)
             {
                 return new ValidationResult

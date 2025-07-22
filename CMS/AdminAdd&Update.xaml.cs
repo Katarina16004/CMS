@@ -200,7 +200,7 @@ namespace CMS
             string plainText = textRange.Text;
             bool hasText = !string.IsNullOrWhiteSpace(plainText.Trim());
 
-            var result = validationService.ValidationSuccessful(items, TitleTextBox.Text, photo, hasText);
+            var result = validationService.ValidationSuccessful(items, TitleTextBox.Text, photo, hasText, selectedItem);
             if(result.IsValidationError)
             {
                 if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
