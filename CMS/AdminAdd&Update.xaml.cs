@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using Notification.Wpf;
 using CMS.Services;
 using System.Diagnostics.SymbolStore;
+using CMS.Services.Interfaces;
 
 namespace CMS
 {
@@ -31,6 +32,7 @@ namespace CMS
         private List<ContentItem> items;
         private string photo = "";
         private ContentValidationService validationService;
+        private readonly IRtfDataService rtfDataService = new RtfDataService();
         public AdminAdd_Update(List<ContentItem> items, ContentItem selectedItem = null)
         {
             InitializeComponent();
@@ -52,11 +54,15 @@ namespace CMS
 
             if (selectedItem == null)
                 TitleTextBox.Focus();
+            else
+                LoadSelectedItem();
 
             FontFamilyComboBox.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source); //sortira po imenu
             FontFamily defaultFont = new FontFamily("Segoe UI");
             FontFamilyComboBox.SelectedItem = defaultFont;
-            FontSizeComboBox.Text = "12";
+            FontSizeComboBox.ItemsSource = new List<double> { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72 };
+            FontSizeComboBox.SelectedItem = 12.0;
+
             var colors = typeof(Colors).GetProperties()
             .Select(p => new
             {
@@ -67,6 +73,38 @@ namespace CMS
             FontColorComboBox.ItemsSource = colors;
             FontColorComboBox.SelectedItem= colors.FirstOrDefault(c => c.Name == "Black");
 
+        }
+        private void LoadSelectedItem()
+        {
+            TitleTextBox.Text = selectedItem.Text;
+            photo = selectedItem.ImagePath;
+            try
+            {
+                string imagePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, selectedItem.ImagePath);
+                ImagePreview.Source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
+            }
+            catch { }
+
+            try
+            {
+                string fullRtfPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, selectedItem.RtfFilePath);
+                if (File.Exists(fullRtfPath))
+                {
+                    using (FileStream fileStream = new FileStream(fullRtfPath, FileMode.Open, FileAccess.Read))
+                    {
+                        TextRange range = new TextRange(EditorRichTextBox.Document.ContentStart, EditorRichTextBox.Document.ContentEnd);
+                        range.Load(fileStream, DataFormats.Rtf);
+                    }
+                }
+                else
+                {
+                    ShowToast("Error", $"RTF file doesn't exist: {fullRtfPath}", false);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowToast("Error", "Failed to load RTF content: " + ex.Message, false);
+            }
         }
         private void ShowToast(string title, string message, bool success=false)
         {
@@ -128,8 +166,10 @@ namespace CMS
 
         private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (FontSizeComboBox.SelectedItem!=null && !EditorRichTextBox.Selection.IsEmpty)
-                EditorRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, FontSizeComboBox.SelectedItem);
+            if (FontSizeComboBox.SelectedItem is double fontSize && !EditorRichTextBox.Selection.IsEmpty)
+            {
+                EditorRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, fontSize);
+            }
         }
 
         private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -177,10 +217,12 @@ namespace CMS
                 if (string.IsNullOrWhiteSpace(photo))
                 {
                     PhotoNote.Content = "Insert image";
+                    SelectImageButton.BorderBrush= Brushes.Red;
                 }
                 else
                 {
                     PhotoNote.Content = "";
+                    SelectImageButton.ClearValue(Border.BorderBrushProperty);
                 }
 
                 if (hasText==false)
@@ -195,17 +237,17 @@ namespace CMS
                 }
                 return;
             }
-            if(!result.Success)
+            TitleNote.Content = "";
+            TitleTextBox.ClearValue(Border.BorderBrushProperty);
+            PhotoNote.Content = "";
+            SelectImageButton.ClearValue(Border.BorderBrushProperty);
+            RichTbNote.Content = "";
+            EditorRichTextBox.ClearValue(Border.BorderBrushProperty);
+            if (!result.Success)
             {
                 ShowToast("Error", "Title already exists");
                 return;
             }
-
-            TitleNote.Content = "";
-            TitleTextBox.ClearValue(Border.BorderBrushProperty);
-            PhotoNote.Content = "";
-            RichTbNote.Content = "";
-            EditorRichTextBox.ClearValue(Border.BorderBrushProperty);
             ShowToast("Success", "Successfuly saved",true);
 
         }

@@ -59,15 +59,24 @@
                     <Label Name="TitleNote" Visibility="Visible" Foreground="Red" Margin="0,-8,0,0" HorizontalAlignment="Center" Content=""/>
 
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Margin="0,0,10,0">Photo:</TextBlock>
-                        <Button Name="SelectImageButton" Content="Select image" Style="{StaticResource ModernButton}" Click="SelectImageButton_Click" />
-                        <StackPanel>
-                            <Image x:Name="ImagePreview" Height="100" Width="100" Margin="20,0,0,0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown"/>
-                            <Label Name="PhotoNote" Visibility="Visible" Foreground="Red" Margin="0,-8,0,0" HorizontalAlignment="Center" Content=""/>
-                        </StackPanel>
-                    </StackPanel>
+                    <Grid Width="350" HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" >Photo:</TextBlock>
+                        <Button Name="SelectImageButton" Grid.Column="1" Content="Select image" Style="{StaticResource ModernButton}" Click="SelectImageButton_Click" />
+                        <Image x:Name="ImagePreview" Grid.Column="2" Height="100" Width="100" Margin="20,0,0,0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown"/>
+                        <Label Grid.Row="1" Grid.Column="1" Name="PhotoNote" Visibility="Visible" Foreground="Red" Margin="0,-30,0,0" HorizontalAlignment="Center" Content=""/>
+                    </Grid>
                     
+
+
                 </StackPanel>
 
 
@@ -110,24 +119,10 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox x:Name="FontSizeComboBox" Width="60" Margin="10,0" SelectionChanged="FontSizeComboBox_SelectionChanged" IsEditable="False">
-                        <ComboBoxItem>8</ComboBoxItem>
-                        <ComboBoxItem>9</ComboBoxItem>
-                        <ComboBoxItem>10</ComboBoxItem>
-                        <ComboBoxItem>11</ComboBoxItem>
-                        <ComboBoxItem>12</ComboBoxItem>
-                        <ComboBoxItem>14</ComboBoxItem>
-                        <ComboBoxItem>16</ComboBoxItem>
-                        <ComboBoxItem>18</ComboBoxItem>
-                        <ComboBoxItem>20</ComboBoxItem>
-                        <ComboBoxItem>22</ComboBoxItem>
-                        <ComboBoxItem>24</ComboBoxItem>
-                        <ComboBoxItem>26</ComboBoxItem>
-                        <ComboBoxItem>28</ComboBoxItem>
-                        <ComboBoxItem>36</ComboBoxItem>
-                        <ComboBoxItem>48</ComboBoxItem>
-                        <ComboBoxItem>72</ComboBoxItem>
-                    </ComboBox>
+                    <ComboBox x:Name="FontSizeComboBox" Width="60" Margin="10,0"
+                      SelectionChanged="FontSizeComboBox_SelectionChanged"
+                      IsEditable="False"
+                      DisplayMemberPath="." />
 
                     <ComboBox x:Name="FontColorComboBox" SelectionChanged="FontColorComboBox_SelectionChanged" Width="150" Margin="5">
                         <ComboBox.ItemTemplate>
@@ -147,9 +142,8 @@
                 <StatusBar Grid.Row="3" Margin="10,0" Background="White" BorderThickness="2" BorderBrush="#D6B3FF">
                     <StatusBarItem>
                         <TextBlock x:Name="WordCountTextBlock" Text="Words: 0" />
-                        
                     </StatusBarItem>
-                    <Label Name="RichTbNote" Visibility="Visible" Foreground="Red" Margin="20,0,0,0" HorizontalAlignment="Center" Content=""/>
+                    <Label Name="RichTbNote" Visibility="Visible" Foreground="Red" Margin="430,0,0,0" Content=""/>
                 </StatusBar>
                 <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" Margin="10,0">
                     <Button Name="SaveButton" Content="Save" Style="{StaticResource ModernButton}" Margin="20,0" Click="SaveButton_Click"/>
