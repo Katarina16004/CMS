@@ -21,7 +21,7 @@ namespace CMS
     public partial class AdminAdd_Update : Window
     {
         private DispatcherTimer notificationTimer;
-        private ContentItem selectedItem;
+        private ContentItem selectedItem, originalItem;
         private List<ContentItem> items;
         private string photo = "";
         private ContentValidationService validationService;
@@ -30,6 +30,7 @@ namespace CMS
         {
             InitializeComponent();
             validationService = new ContentValidationService();
+
             var xmlService = new XmlDataService<ContentItem>("Content.xml");
             var rtfService = new RtfDataService();
             _saveContentService = new SaveContentService(xmlService, rtfService);
@@ -45,6 +46,15 @@ namespace CMS
 
             this.items = items;
             this.selectedItem = selectedItem;
+            this.DataContext = selectedItem;
+            originalItem = new ContentItem
+            {
+                NumericValue = selectedItem.NumericValue,
+                Text = selectedItem.Text,
+                ImagePath = selectedItem.ImagePath,
+                RtfFilePath = selectedItem.RtfFilePath,
+                DateAdded = selectedItem.DateAdded
+            };
             //ako je selected item null znamo da smo pozvali dodavanje, prazna polja
             //ako nije null, radimo izmenu, popunjena polja
 
@@ -127,6 +137,21 @@ namespace CMS
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            if (selectedItem != null && originalItem != null)
+            {
+                TitleTextBox.Text = originalItem.Text;
+                NumberTextBox.Text = originalItem.NumericValue.ToString();
+                photo = originalItem.ImagePath;
+                ImagePreview.Source = new BitmapImage(new Uri(photo, UriKind.Absolute));
+
+                if (File.Exists(originalItem.RtfFilePath))
+                {
+                    using FileStream fileStream = new FileStream(originalItem.RtfFilePath, FileMode.Open, FileAccess.Read);
+                    TextRange range = new TextRange(EditorRichTextBox.Document.ContentStart, EditorRichTextBox.Document.ContentEnd);
+                    range.Load(fileStream, DataFormats.Rtf);
+                }
+            }
+
             this.Close();
         }
 
@@ -189,6 +214,34 @@ namespace CMS
                 photo = openFileDialog.FileName;
                 ImagePreview.Source = new BitmapImage(new Uri(photo));
             }
+            /*OpenFileDialog openFileDialog = new OpenFileDialog();
+     openFileDialog.Filter = "PNG Images (*.png)|*.png";
+     openFileDialog.Title = "Select an image";
+
+     if (openFileDialog.ShowDialog() == true)
+     {
+         string selectedFilePath = openFileDialog.FileName;
+         string fileName = System.IO.Path.GetFileName(selectedFilePath);
+
+         string resourceFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
+         if (!Directory.Exists(resourceFolder))
+         {
+             Directory.CreateDirectory(resourceFolder);
+         }
+
+         string destFilePath = System.IO.Path.Combine(resourceFolder, fileName);
+
+         if (!File.Exists(destFilePath))
+         {
+             File.Copy(selectedFilePath, destFilePath);
+         }
+
+         photo = $"Resources/{fileName}";
+
+         // Prikaz slike
+         string fullPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, photo);
+         ImagePreview.Source = new BitmapImage(new Uri(fullPath));
+     }*/
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -196,11 +249,13 @@ namespace CMS
             TextRange textRange = new TextRange(EditorRichTextBox.Document.ContentStart, EditorRichTextBox.Document.ContentEnd);
             string plainText = textRange.Text;
             bool hasText = !string.IsNullOrWhiteSpace(plainText.Trim());
+            int parsedId = 0;
+            bool isIdValid = int.TryParse(NumberTextBox.Text, out parsedId);
 
             var result = validationService.ValidationSuccessful(items, TitleTextBox.Text, NumberTextBox.Text, photo, hasText, selectedItem);
             if(result.IsValidationError)
             {
-                if (string.IsNullOrWhiteSpace(NumberTextBox.Text) || !int.TryParse(NumberTextBox.Text, out int parsedId))
+                if (string.IsNullOrWhiteSpace(NumberTextBox.Text) || !isIdValid)
                 {
                     NumberNote.Content = "Fill in id field with a number";
                     NumberTextBox.BorderBrush = Brushes.Red;
@@ -254,19 +309,22 @@ namespace CMS
             EditorRichTextBox.ClearValue(Border.BorderBrushProperty);
             if (!result.Success)
             {
-                ShowToast("Error", "Title already exists");
+                if(result.Message.Contains("Id"))
+                    ShowToast("Error", "Id already exists");
+                else if (result.Message.Contains("Title"))
+                    ShowToast("Error", "Title already exists");
                 return;
             }
 
-            
+            //prosla verifikacija
 
-            /*if (selectedItem == null) //dodavanje ako je null
+            if (selectedItem == null) //dodavanje ako je null
             {
 
             }
             else
             {
-                bool updateResult = _saveContentService.UpdateContentItem(items, selectedItem, TitleTextBox.Text, photo, EditorRichTextBox);
+                bool updateResult = _saveContentService.UpdateContentItem(items, selectedItem, TitleTextBox.Text, parsedId, photo, EditorRichTextBox);
 
                 if (updateResult)
                 {
@@ -276,8 +334,8 @@ namespace CMS
                 {
                     ShowToast("Error", "Error saving content changes", false);
                 }
-            }*/
-            ShowToast("Success", "Successfuly saved", true);
+            }
+            this.Close();
         }
 
         private void ImagePreview_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

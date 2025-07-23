@@ -64,6 +64,16 @@ namespace CMS.Services
                     Message = "Title already exists. Please choose a different title"
                 };
             }
+            bool idExists = items.Any(c => !object.ReferenceEquals(c, currentItem) && c.NumericValue == parsedId);
+            if (idExists)
+            {
+                return new ValidationResult
+                {
+                    Success = false,
+                    IsValidationError = false,
+                    Message = "Id already exists. Please choose a different one"
+                };
+            }
 
             return new ValidationResult
             {

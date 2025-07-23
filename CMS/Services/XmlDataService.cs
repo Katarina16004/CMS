@@ -39,39 +39,5 @@ namespace CMS.Services
                 serializer.Serialize(fs, items);
             }
         }
-
-        /*public void Add(T item)
-        {
-            var list = LoadAll();
-            list.Add(item);
-            SaveAll(list);
-        }
-
-        public void Remove(int id)
-        {
-            var list = LoadAll();
-            list.RemoveAll(x => x.Id == id);
-            SaveAll(list);
-        }*/
-        /*public void Update(T updatedItem) //za Content
-        {
-            var list = LoadAll();
-
-            var idProperty = typeof(T).GetProperty("NumericValue");
-            var updatedId = idProperty.GetValue(updatedItem);
-
-            int index = list.FindIndex(item =>
-            {
-                var itemId = idProperty.GetValue(item);
-                return itemId != null && itemId.Equals(updatedId);
-            });
-
-            if (index == -1)
-                throw new ArgumentException($"Object with NumericValue {updatedId} not found.");
-
-            list[index] = updatedItem;
-            SaveAll(list);
-        }*/
-
     }
 }

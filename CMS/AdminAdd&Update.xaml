@@ -62,12 +62,12 @@
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Label VerticalAlignment="Center">Title:</Label>
-                            <TextBox Grid.Column="1" Style="{StaticResource ModernTextBox}" Background="#fdf7ff" x:Name="TitleTextBox"/>
+                            <TextBox Grid.Column="1" Style="{StaticResource ModernTextBox}" Background="#fdf7ff" x:Name="TitleTextBox" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                         <Label Grid.Row="1" Name="TitleNote" Visibility="Visible" Foreground="Red" Margin="0,-8,0,0" HorizontalAlignment="Center" Content=""/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
-                            <Label Grid.Column="2" VerticalAlignment="Center" >Rating:</Label>
-                            <TextBox Grid.Column="3" Style="{StaticResource ModernTextBox}" Background="#fdf7ff" x:Name="NumberTextBox"/>
+                            <Label Grid.Column="2" VerticalAlignment="Center" >ID:</Label>
+                            <TextBox Grid.Column="3" Style="{StaticResource ModernTextBox}" Background="#fdf7ff" x:Name="NumberTextBox" Text="{Binding NumericValue, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                         <Label Grid.Row="1" Grid.Column="1" Name="NumberNote" Visibility="Visible" Foreground="Red" Margin="0,-8,0,0" HorizontalAlignment="Center" Content=""/>
                     </Grid>
@@ -84,7 +84,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" >Photo:</TextBlock>
                         <Button Name="SelectImageButton" Grid.Column="1" Content="Select image" Style="{StaticResource ModernButton}" Click="SelectImageButton_Click" />
-                        <Image x:Name="ImagePreview" Grid.Column="2" Height="100" Width="100" Margin="20,0,0,0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown"/>
+                        <Image x:Name="ImagePreview" Grid.Column="2" Height="100" Width="100" Margin="20,0,0,0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" Source="{Binding ImagePath}"/>
                         <Label Grid.Row="1" Grid.Column="1" Name="PhotoNote" Visibility="Visible" Foreground="Red" Margin="0,-30,0,0" HorizontalAlignment="Center" Content=""/>
                     </Grid>
                     

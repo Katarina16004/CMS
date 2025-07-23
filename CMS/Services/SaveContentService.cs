@@ -19,22 +19,20 @@ namespace CMS.Services
 
         public SaveContentService(XmlDataService<ContentItem> contentService, IRtfDataService rtfDataService)
         {
-            _contentService = contentService;
+            _contentService = new XmlDataService<ContentItem>("Data/Content.xml");
             _rtfDataService = rtfDataService;
         }
 
-        public bool UpdateContentItem(ICollection<ContentItem> allItems, ContentItem selectedItem, string newTitle, string newImagePath, RichTextBox newRichTextBox)
+        public bool UpdateContentItem(ICollection<ContentItem> allItems, ContentItem selectedItem, string newTitle, int newNumericValue, string newImagePath, RichTextBox newRichTextBox)
         {
             try
             {
-                int index = allItems.ToList().FindIndex(item => item.NumericValue == selectedItem.NumericValue);
-                var list = allItems.ToList();
+                selectedItem.NumericValue = newNumericValue;
+                selectedItem.Text = newTitle;
+                selectedItem.ImagePath = newImagePath;
 
-                list[index].Text = newTitle;
-                list[index].ImagePath = newImagePath;
-
-                _rtfDataService.SaveRtfContent(newRichTextBox, list[index].RtfFilePath);
-                _contentService.SaveAll(list);
+                _rtfDataService.SaveRtfContent(newRichTextBox, selectedItem.RtfFilePath);
+                _contentService.SaveAll(allItems.ToList());
 
                 return true;
             }
