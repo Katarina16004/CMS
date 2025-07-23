@@ -26,6 +26,7 @@ namespace CMS
         private string photo = "";
         private ContentValidationService validationService;
         private SaveContentService _saveContentService;
+        private readonly RtfDataService rtfService;
         public bool IsSuccess { get; private set; } = false;
         public bool IsUpdate { get; private set; } = false;
         public AdminAdd_Update(List<ContentItem> items, ContentItem selectedItem = null)
@@ -34,7 +35,7 @@ namespace CMS
             validationService = new ContentValidationService();
 
             var xmlService = new XmlDataService<ContentItem>("Content.xml");
-            var rtfService = new RtfDataService();
+            this.rtfService = new RtfDataService();
             _saveContentService = new SaveContentService(xmlService, rtfService);
             #region notificationSetup
             notificationTimer = new DispatcherTimer();
@@ -101,18 +102,7 @@ namespace CMS
             try
             {
                 string fullRtfPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, selectedItem.RtfFilePath);
-                if (File.Exists(fullRtfPath))
-                {
-                    using (FileStream fileStream = new FileStream(fullRtfPath, FileMode.Open, FileAccess.Read))
-                    {
-                        TextRange range = new TextRange(EditorRichTextBox.Document.ContentStart, EditorRichTextBox.Document.ContentEnd);
-                        range.Load(fileStream, DataFormats.Rtf);
-                    }
-                }
-                else
-                {
-                    ShowToast("Error", $"RTF file doesn't exist: {fullRtfPath}", false);
-                }
+                rtfService.LoadRtfContent(EditorRichTextBox, fullRtfPath);
             }
             catch (Exception ex)
             {
@@ -148,14 +138,9 @@ namespace CMS
                 TitleTextBox.Text = originalItem.Text;
                 NumberTextBox.Text = originalItem.NumericValue.ToString();
                 photo = originalItem.ImagePath;
-                ImagePreview.Source = new BitmapImage(new Uri(photo, UriKind.Absolute));
+                ImagePreview.Source = new BitmapImage(new Uri(photo, UriKind.RelativeOrAbsolute));
 
-                if (File.Exists(originalItem.RtfFilePath))
-                {
-                    using FileStream fileStream = new FileStream(originalItem.RtfFilePath, FileMode.Open, FileAccess.Read);
-                    TextRange range = new TextRange(EditorRichTextBox.Document.ContentStart, EditorRichTextBox.Document.ContentEnd);
-                    range.Load(fileStream, DataFormats.Rtf);
-                }
+                rtfService.LoadRtfContent(EditorRichTextBox, originalItem.RtfFilePath);
             }
 
             this.Close();
@@ -310,7 +295,7 @@ namespace CMS
                 if (updateResult)
                     IsUpdate = true;
                 else
-                    IsUpdate = false;
+                    IsUpdate=false;
             }
             this.Close();
         }

@@ -40,29 +40,6 @@ namespace CMS
                 VisitorContentDetails detailsWindow = new VisitorContentDetails(selectedItem);
                 Window menuWindow = Window.GetWindow(this);
                 detailsWindow.Show();
-                //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
-            }
-        }
-
-        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is Image image)
-            {
-                Window imageWindow = new Window
-                {
-                    Title = "Image preview",
-                    Width = 500,
-                    Height = 400,
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                    Content = new Image
-                    {
-                        Source = image.Source,
-                        Stretch = Stretch.Uniform,
-                        Margin = new Thickness(10)
-                    }
-                };
-
-                imageWindow.ShowDialog();
             }
         }
     }

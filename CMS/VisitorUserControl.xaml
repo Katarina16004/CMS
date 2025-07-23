@@ -14,7 +14,7 @@
                     <DataGridTemplateColumn Header="Title" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center" Margin="10">
+                                <TextBlock VerticalAlignment="Center" Margin="10"  FontSize="22">
                                 <Hyperlink Click="Hyperlink_Click">
                                     <Run Text="{Binding Text}" />
                                 </Hyperlink>
@@ -25,7 +25,7 @@
                     <DataGridTemplateColumn Header="Image" Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImagePath}" Width="100" Height="70" Stretch="Uniform" Cursor="Hand" MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+                                <Image Source="{Binding ImagePath}" Width="100" Height="70" Stretch="Uniform"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

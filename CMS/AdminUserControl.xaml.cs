@@ -62,8 +62,6 @@ namespace CMS
             LoadContent();
             if (detailsWindow.IsSuccess)
                 ShowNotification("Success", "Content was successfully saved", NotificationType.Success);
-            else
-                ShowNotification("Error", "Operation was canceled or failed", NotificationType.Error);
         }
         private void Item_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -130,8 +128,6 @@ namespace CMS
                 detailsWindow.ShowDialog();
                 if (detailsWindow.IsUpdate)
                     ShowNotification("Success", "Content was successfully updated", NotificationType.Success);
-                else
-                    ShowNotification("Error", "Operation was canceled or failed", NotificationType.Error);
             }
         }
 
