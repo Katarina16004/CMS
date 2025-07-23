@@ -59,7 +59,11 @@ namespace CMS
             AdminAdd_Update detailsWindow = new AdminAdd_Update(items.ToList(),null);
             Window menuWindow = Window.GetWindow(this);
             detailsWindow.ShowDialog();
-            //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
+            LoadContent();
+            if (detailsWindow.IsSuccess)
+                ShowNotification("Success", "Content was successfully saved", NotificationType.Success);
+            else
+                ShowNotification("Error", "Operation was canceled or failed", NotificationType.Error);
         }
         private void Item_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -124,7 +128,10 @@ namespace CMS
                 AdminAdd_Update detailsWindow = new AdminAdd_Update(items.ToList(), selectedItem);
                 Window menuWindow = Window.GetWindow(this);
                 detailsWindow.ShowDialog();
-                //menuWindow.Close(); //ukljuci kada dodas dugme za izlazenje iz prikaza
+                if (detailsWindow.IsUpdate)
+                    ShowNotification("Success", "Content was successfully updated", NotificationType.Success);
+                else
+                    ShowNotification("Error", "Operation was canceled or failed", NotificationType.Error);
             }
         }
 

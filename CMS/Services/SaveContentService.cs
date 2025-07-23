@@ -41,5 +41,37 @@ namespace CMS.Services
                 return false;
             }
         }
+        public bool AddContentItem(ICollection<ContentItem> allItems, string title, int numericValue, string imagePath, RichTextBox richTextBox)
+        {
+            try
+            {
+                string rtfFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
+                if (!Directory.Exists(rtfFolderPath))
+                    Directory.CreateDirectory(rtfFolderPath);
+
+                string rtfName = title.Replace(" ", "_");
+                string rtfFilePath = Path.Combine(rtfFolderPath, $"{rtfName}.rtf");
+
+                _rtfDataService.SaveRtfContent(richTextBox, rtfFilePath);
+
+                ContentItem newItem = new ContentItem
+                {
+                    Text = title,
+                    NumericValue = numericValue,
+                    ImagePath = imagePath,
+                    RtfFilePath = rtfFilePath
+                };
+
+                allItems.Add(newItem);
+                _contentService.SaveAll(allItems.ToList());
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }

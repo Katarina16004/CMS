@@ -26,6 +26,8 @@ namespace CMS
         private string photo = "";
         private ContentValidationService validationService;
         private SaveContentService _saveContentService;
+        public bool IsSuccess { get; private set; } = false;
+        public bool IsUpdate { get; private set; } = false;
         public AdminAdd_Update(List<ContentItem> items, ContentItem selectedItem = null)
         {
             InitializeComponent();
@@ -47,21 +49,25 @@ namespace CMS
             this.items = items;
             this.selectedItem = selectedItem;
             this.DataContext = selectedItem;
-            originalItem = new ContentItem
-            {
-                NumericValue = selectedItem.NumericValue,
-                Text = selectedItem.Text,
-                ImagePath = selectedItem.ImagePath,
-                RtfFilePath = selectedItem.RtfFilePath,
-                DateAdded = selectedItem.DateAdded
-            };
+            
             //ako je selected item null znamo da smo pozvali dodavanje, prazna polja
             //ako nije null, radimo izmenu, popunjena polja
 
             if (selectedItem == null)
                 TitleTextBox.Focus();
             else
+            {
+                originalItem = new ContentItem
+                {
+                    NumericValue = selectedItem.NumericValue,
+                    Text = selectedItem.Text,
+                    ImagePath = selectedItem.ImagePath,
+                    RtfFilePath = selectedItem.RtfFilePath,
+                    DateAdded = selectedItem.DateAdded
+                };
                 LoadSelectedItem();
+            }
+                
 
             FontFamilyComboBox.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source); //sortira po imenu
             FontFamily defaultFont = new FontFamily("Segoe UI");
@@ -214,34 +220,6 @@ namespace CMS
                 photo = openFileDialog.FileName;
                 ImagePreview.Source = new BitmapImage(new Uri(photo));
             }
-            /*OpenFileDialog openFileDialog = new OpenFileDialog();
-     openFileDialog.Filter = "PNG Images (*.png)|*.png";
-     openFileDialog.Title = "Select an image";
-
-     if (openFileDialog.ShowDialog() == true)
-     {
-         string selectedFilePath = openFileDialog.FileName;
-         string fileName = System.IO.Path.GetFileName(selectedFilePath);
-
-         string resourceFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
-         if (!Directory.Exists(resourceFolder))
-         {
-             Directory.CreateDirectory(resourceFolder);
-         }
-
-         string destFilePath = System.IO.Path.Combine(resourceFolder, fileName);
-
-         if (!File.Exists(destFilePath))
-         {
-             File.Copy(selectedFilePath, destFilePath);
-         }
-
-         photo = $"Resources/{fileName}";
-
-         // Prikaz slike
-         string fullPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, photo);
-         ImagePreview.Source = new BitmapImage(new Uri(fullPath));
-     }*/
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -317,23 +295,22 @@ namespace CMS
             }
 
             //prosla verifikacija
-
-            if (selectedItem == null) //dodavanje ako je null
+            if (selectedItem == null) //dodavanje je ako je null
             {
-
+                bool addResult=_saveContentService.AddContentItem(items,TitleTextBox.Text, parsedId, photo, EditorRichTextBox);
+                if (addResult)
+                    IsSuccess = true;
+                else
+                    IsSuccess = false;  
             }
             else
             {
                 bool updateResult = _saveContentService.UpdateContentItem(items, selectedItem, TitleTextBox.Text, parsedId, photo, EditorRichTextBox);
 
                 if (updateResult)
-                {
-                    ShowToast("Success", "Successfully updated content", true);
-                }
+                    IsUpdate = true;
                 else
-                {
-                    ShowToast("Error", "Error saving content changes", false);
-                }
+                    IsUpdate = false;
             }
             this.Close();
         }
