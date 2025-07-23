@@ -52,21 +52,26 @@ namespace CMS.Services
             var list = LoadAll();
             list.RemoveAll(x => x.Id == id);
             SaveAll(list);
-        }
-
-        public void Update(T updatedItem)
+        }*/
+        /*public void Update(T updatedItem) //za Content
         {
             var list = LoadAll();
-            int index = list.FindIndex(x => x.Id == updatedItem.Id);
-            if (index != -1)
+
+            var idProperty = typeof(T).GetProperty("NumericValue");
+            var updatedId = idProperty.GetValue(updatedItem);
+
+            int index = list.FindIndex(item =>
             {
-                list[index] = updatedItem;
-                SaveAll(list);
-            }
-            else
-            {
-                throw new ArgumentException($"Object with Id {updatedItem.Id} not found.");
-            }
+                var itemId = idProperty.GetValue(item);
+                return itemId != null && itemId.Equals(updatedId);
+            });
+
+            if (index == -1)
+                throw new ArgumentException($"Object with NumericValue {updatedId} not found.");
+
+            list[index] = updatedItem;
+            SaveAll(list);
         }*/
+
     }
 }

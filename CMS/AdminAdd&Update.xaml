@@ -50,14 +50,27 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label VerticalAlignment="Center">Title:</Label>
-                        <TextBox Grid.Column="1" Style="{StaticResource ModernTextBox}" Background="#fdf7ff"
-                    x:Name="TitleTextBox"/>
-                    </StackPanel>
-                    <Label Name="TitleNote" Visibility="Visible" Foreground="Red" Margin="0,-8,0,0" HorizontalAlignment="Center" Content=""/>
-
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Label VerticalAlignment="Center">Title:</Label>
+                            <TextBox Grid.Column="1" Style="{StaticResource ModernTextBox}" Background="#fdf7ff" x:Name="TitleTextBox"/>
+                        </StackPanel>
+                        <Label Grid.Row="1" Name="TitleNote" Visibility="Visible" Foreground="Red" Margin="0,-8,0,0" HorizontalAlignment="Center" Content=""/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
+                            <Label Grid.Column="2" VerticalAlignment="Center" >Rating:</Label>
+                            <TextBox Grid.Column="3" Style="{StaticResource ModernTextBox}" Background="#fdf7ff" x:Name="NumberTextBox"/>
+                        </StackPanel>
+                        <Label Grid.Row="1" Grid.Column="1" Name="NumberNote" Visibility="Visible" Foreground="Red" Margin="0,-8,0,0" HorizontalAlignment="Center" Content=""/>
+                    </Grid>
 
                     <Grid Width="350" HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>

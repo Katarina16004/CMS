@@ -10,8 +10,18 @@ namespace CMS.Services
 {
     public class ContentValidationService:IContentValidationService
     {
-        public ValidationResult ValidationSuccessful(List<ContentItem> items, string title, string? image, bool hasText,ContentItem? currentItem = null)
+        public ValidationResult ValidationSuccessful(List<ContentItem> items, string title, string number, string? image, bool hasText,ContentItem? currentItem = null)
         {
+            int parsedId= 0;
+            if (string.IsNullOrWhiteSpace(number) || !int.TryParse(number, out parsedId))
+            {
+                return new ValidationResult
+                {
+                    Success = false,
+                    IsValidationError = true,
+                    Message = "Id can't be empty and must be a number"
+                };
+            }
 
             if (string.IsNullOrWhiteSpace(title))
             {

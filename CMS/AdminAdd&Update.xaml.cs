@@ -1,24 +1,17 @@
 ﻿using CMS.Models;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using Notification.Wpf;
 using CMS.Services;
-using System.Diagnostics.SymbolStore;
 using CMS.Services.Interfaces;
+using Path = System.IO.Path;
+
 
 namespace CMS
 {
@@ -32,11 +25,14 @@ namespace CMS
         private List<ContentItem> items;
         private string photo = "";
         private ContentValidationService validationService;
-        private readonly IRtfDataService rtfDataService = new RtfDataService();
+        private SaveContentService _saveContentService;
         public AdminAdd_Update(List<ContentItem> items, ContentItem selectedItem = null)
         {
             InitializeComponent();
             validationService = new ContentValidationService();
+            var xmlService = new XmlDataService<ContentItem>("Content.xml");
+            var rtfService = new RtfDataService();
+            _saveContentService = new SaveContentService(xmlService, rtfService);
             #region notificationSetup
             notificationTimer = new DispatcherTimer();
             notificationTimer.Interval = TimeSpan.FromSeconds(3);
@@ -77,6 +73,7 @@ namespace CMS
         private void LoadSelectedItem()
         {
             TitleTextBox.Text = selectedItem.Text;
+            NumberTextBox.Text = selectedItem.NumericValue.ToString();
             photo = selectedItem.ImagePath;
             try
             {
@@ -200,9 +197,19 @@ namespace CMS
             string plainText = textRange.Text;
             bool hasText = !string.IsNullOrWhiteSpace(plainText.Trim());
 
-            var result = validationService.ValidationSuccessful(items, TitleTextBox.Text, photo, hasText, selectedItem);
+            var result = validationService.ValidationSuccessful(items, TitleTextBox.Text, NumberTextBox.Text, photo, hasText, selectedItem);
             if(result.IsValidationError)
             {
+                if (string.IsNullOrWhiteSpace(NumberTextBox.Text) || !int.TryParse(NumberTextBox.Text, out int parsedId))
+                {
+                    NumberNote.Content = "Fill in id field with a number";
+                    NumberTextBox.BorderBrush = Brushes.Red;
+                }
+                else
+                {
+                    NumberNote.Content = "";
+                    NumberTextBox.ClearValue(Border.BorderBrushProperty);
+                }
                 if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
                 {
                     TitleNote.Content = "Fill in title field";
@@ -239,6 +246,8 @@ namespace CMS
             }
             TitleNote.Content = "";
             TitleTextBox.ClearValue(Border.BorderBrushProperty);
+            NumberNote.Content = "";
+            NumberTextBox.ClearValue(Border.BorderBrushProperty);
             PhotoNote.Content = "";
             SelectImageButton.ClearValue(Border.BorderBrushProperty);
             RichTbNote.Content = "";
@@ -248,8 +257,27 @@ namespace CMS
                 ShowToast("Error", "Title already exists");
                 return;
             }
-            ShowToast("Success", "Successfuly saved",true);
 
+            
+
+            /*if (selectedItem == null) //dodavanje ako je null
+            {
+
+            }
+            else
+            {
+                bool updateResult = _saveContentService.UpdateContentItem(items, selectedItem, TitleTextBox.Text, photo, EditorRichTextBox);
+
+                if (updateResult)
+                {
+                    ShowToast("Success", "Successfully updated content", true);
+                }
+                else
+                {
+                    ShowToast("Error", "Error saving content changes", false);
+                }
+            }*/
+            ShowToast("Success", "Successfuly saved", true);
         }
 
         private void ImagePreview_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
