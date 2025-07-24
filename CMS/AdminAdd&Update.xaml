@@ -84,7 +84,7 @@
                         </Grid.RowDefinitions>
                         <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" >Photo:</TextBlock>
                         <Button Name="SelectImageButton" Grid.Column="1" Content="Select image" Style="{StaticResource ModernButton}" Click="SelectImageButton_Click" />
-                        <Image x:Name="ImagePreview" Grid.Column="2" Height="100" Width="100" Margin="20,0,0,0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" Source="{Binding ImagePath}"/>
+                        <Image x:Name="ImagePreview" Grid.Column="2" Height="100" Width="100" Margin="20,0,0,0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" Source="{Binding ImagePath}" Cursor="Hand"/>
                         <Label Grid.Row="1" Grid.Column="1" Name="PhotoNote" Visibility="Visible" Foreground="Red" Margin="0,-30,0,0" HorizontalAlignment="Center" Content=""/>
                     </Grid>
                     

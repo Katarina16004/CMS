@@ -34,7 +34,7 @@ namespace CMS
             InitializeComponent();
             validationService = new ContentValidationService();
 
-            var xmlService = new XmlDataService<ContentItem>("Content.xml");
+            var xmlService = new XmlDataService<ContentItem>("Data/Content.xml");
             this.rtfService = new RtfDataService();
             _saveContentService = new SaveContentService(xmlService, rtfService);
             #region notificationSetup
@@ -95,7 +95,7 @@ namespace CMS
             try
             {
                 string imagePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, selectedItem.ImagePath);
-                ImagePreview.Source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
+                ImagePreview.Source = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
             }
             catch { }
 
@@ -196,14 +196,27 @@ namespace CMS
 
         private void SelectImageButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "PNG Images (*.png)|*.png";
-            openFileDialog.Title = "Select an image";
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory, // bin folder
+                Filter = "PNG Images (*.png)|*.png",
+                Title = "Select an image from the application folder"
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                photo = openFileDialog.FileName;
-                ImagePreview.Source = new BitmapImage(new Uri(photo));
+                string selectedFullPath = openFileDialog.FileName;
+                //dozvoljeno samo iz bin foldera
+                string binPath = AppDomain.CurrentDomain.BaseDirectory;
+                if (selectedFullPath.StartsWith(binPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    photo = openFileDialog.FileName;
+                    ImagePreview.Source = new BitmapImage(new Uri(photo));
+                }
+                else
+                {
+                    ShowToast("Invalid File", "Please select an image located inside the application (bin) folder", false);
+                }
             }
         }
 

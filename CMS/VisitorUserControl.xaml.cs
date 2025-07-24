@@ -39,7 +39,7 @@ namespace CMS
             {
                 VisitorContentDetails detailsWindow = new VisitorContentDetails(selectedItem);
                 Window menuWindow = Window.GetWindow(this);
-                detailsWindow.Show();
+                detailsWindow.ShowDialog();
             }
         }
     }

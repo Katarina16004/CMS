@@ -12,8 +12,11 @@
     <None Remove="Data\Users.xml" />
     <None Remove="Resources\affinity.png" />
     <None Remove="Resources\background.png" />
+    <None Remove="Resources\canva.png" />
     <None Remove="Resources\corelDraw.png" />
     <None Remove="Resources\gimp.png" />
+    <None Remove="Resources\illustrator.png" />
+    <None Remove="Resources\inkscape.png" />
     <None Remove="Resources\otvoreno_oko.png" />
     <None Remove="Resources\paintnet.png" />
     <None Remove="Resources\photoshop.png" />
@@ -34,8 +37,13 @@
   <ItemGroup>
     <Resource Include="Resources\affinity.png" />
     <Resource Include="Resources\background.png" />
+    <Resource Include="Resources\canva.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\corelDraw.png" />
     <Resource Include="Resources\gimp.png" />
+    <Resource Include="Resources\illustrator.png" />
+    <Resource Include="Resources\inkscape.png" />
     <Resource Include="Resources\otvoreno_oko.png" />
     <Resource Include="Resources\paintnet.png" />
     <Resource Include="Resources\photoshop.png" />
