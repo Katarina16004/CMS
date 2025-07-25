@@ -196,22 +196,26 @@ namespace CMS
 
         private void SelectImageButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
-                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory, // bin folder
+                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
                 Filter = "PNG Images (*.png)|*.png",
                 Title = "Select an image from the application folder"
             };
 
-            if (openFileDialog.ShowDialog() == true)
+            bool? result = openFileDialog.ShowDialog();
+
+            if (result == true)
             {
                 string selectedFullPath = openFileDialog.FileName;
-                //dozvoljeno samo iz bin foldera
                 string binPath = AppDomain.CurrentDomain.BaseDirectory;
+
                 if (selectedFullPath.StartsWith(binPath, StringComparison.OrdinalIgnoreCase))
                 {
-                    photo = openFileDialog.FileName;
-                    ImagePreview.Source = new BitmapImage(new Uri(photo));
+                    string relativePath = Path.GetRelativePath(binPath, selectedFullPath);
+                    photo = relativePath;
+                    string fullPathForDisplay = Path.Combine(binPath, relativePath);
+                    ImagePreview.Source = new BitmapImage(new Uri(fullPathForDisplay, UriKind.Absolute));
                 }
                 else
                 {

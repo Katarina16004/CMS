@@ -45,21 +45,21 @@ namespace CMS.Services
         {
             try
             {
-                string rtfFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
-                if (!Directory.Exists(rtfFolderPath))
-                    Directory.CreateDirectory(rtfFolderPath);
+                string basePath = AppDomain.CurrentDomain.BaseDirectory;
+                string rtfFolderPath = Path.Combine(basePath, "Data");
 
                 string rtfName = title.Replace(" ", "_");
                 string rtfFilePath = Path.Combine(rtfFolderPath, $"{rtfName}.rtf");
-
                 _rtfDataService.SaveRtfContent(richTextBox, rtfFilePath);
+
+                string relativeRtfPath = Path.GetRelativePath(basePath, rtfFilePath);
 
                 ContentItem newItem = new ContentItem
                 {
                     Text = title,
                     NumericValue = numericValue,
-                    ImagePath = imagePath,
-                    RtfFilePath = rtfFilePath
+                    ImagePath = imagePath,  
+                    RtfFilePath = relativeRtfPath
                 };
 
                 allItems.Add(newItem);
